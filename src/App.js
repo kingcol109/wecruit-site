@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 import RecruitList from './components/RecruitList';
 import RecruitProfile from './components/RecruitProfile';
+import UserProfile from './components/UserProfile';
 import SignIn from './components/SignIn'; // ✅ Import SignIn
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
       <Routes>
         <Route path="/" element={<RecruitList />} />
         <Route path="/recruit/:id" element={<RecruitProfile />} />
+        <Route path="/profile" element={<UserProfile />} />
         {/* <Route path="/upload" element={<UploadRecruit />} /> */}
       </Routes>
     </Router>

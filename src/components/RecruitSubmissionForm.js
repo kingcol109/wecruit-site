@@ -89,20 +89,34 @@ export default function RecruitSubmissionForm({ recruitId }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!user) return;
-    const ref = doc(db, `recruits/${recruitId}/userSubmissions/${user.uid}`);
-    await setDoc(ref, {
+    const recruitRef = doc(db, `recruits/${recruitId}/userSubmissions/${user.uid}`);
+    const userRef = doc(db, `users/${user.uid}/myRecruits/${recruitId}`);
+
+    const now = new Date();
+
+    await setDoc(recruitRef, {
       ...formData,
-      submittedAt: new Date(),
-      editedAt: new Date()
+      submittedAt: now,
+      editedAt: now
     });
+
+    await setDoc(userRef, {
+      recruitId,
+      submittedAt: now
+    });
+
     setExisting(true);
     alert('Submission saved!');
   };
 
   const handleDelete = async () => {
     if (!user) return;
-    const ref = doc(db, `recruits/${recruitId}/userSubmissions/${user.uid}`);
-    await deleteDoc(ref);
+    const recruitRef = doc(db, `recruits/${recruitId}/userSubmissions/${user.uid}`);
+    const userRef = doc(db, `users/${user.uid}/myRecruits/${recruitId}`);
+
+    await deleteDoc(recruitRef);
+    await deleteDoc(userRef);
+
     setFormData({ grade: '', strengths: [], predictedSchool: '', comment: '' });
     setExisting(false);
     alert('Submission deleted.');
