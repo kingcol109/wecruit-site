@@ -19,18 +19,32 @@ export default function SignIn() {
     <div className="p-4">
       {user ? (
         <div className="space-y-2">
-          <p className="mb-2">Signed in as {user.displayName}</p>
-          <div className="flex space-x-4">
-            <Link to="/profile" className="text-blue-600 hover:underline">
+          <p className="mb-2 font-semibold text-gray-800">
+            Signed in as {user.displayName}
+          </p>
+          <div className="flex space-x-4 items-center">
+            <Link
+              to="/profile"
+              className="px-4 py-2 font-extrabold uppercase tracking-wide text-white rounded
+                         bg-[#0055a5] border-4 border-[#f6a21d] shadow hover:brightness-110"
+            >
               My Profile
             </Link>
-            <button onClick={handleSignOut} className="bg-red-500 text-white px-4 py-2 rounded">
+            <button
+              onClick={handleSignOut}
+              className="px-4 py-2 font-extrabold uppercase tracking-wide text-white rounded
+                         bg-red-600 border-4 border-[#f6a21d] shadow hover:brightness-110"
+            >
               Sign Out
             </button>
           </div>
         </div>
       ) : (
-        <button onClick={handleSignIn} className="bg-blue-500 text-white px-4 py-2 rounded">
+        <button
+          onClick={handleSignIn}
+          className="px-6 py-3 font-extrabold uppercase tracking-wide text-white rounded
+                     bg-[#0055a5] border-4 border-[#f6a21d] shadow hover:brightness-110"
+        >
           Sign In with Google
         </button>
       )}
