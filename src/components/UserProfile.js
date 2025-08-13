@@ -112,7 +112,7 @@ export default function UserProfile() {
 
   // filters
   const [selectedPositions, setSelectedPositions] = useState([]);
-  const [selectedGrades, setSelectedGrades] = useState([]);
+  const [selectedGrades, setSelectedGrades] = useState([]); // now "Your Grade"
   const [selectedStates, setSelectedStates] = useState([]);
   const [selectedClasses, setSelectedClasses] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
@@ -151,10 +151,13 @@ export default function UserProfile() {
     () => [...new Set(recruits.map((r) => r.recruit?.Position))].filter(Boolean),
     [recruits]
   );
+
+  // use submission.grade instead of KC Grade
   const uniqueGrades = useMemo(
-    () => [...new Set(recruits.map((r) => r.recruit?.['KC Grade']))].filter(Boolean),
+    () => [...new Set(recruits.map((r) => r.submission?.grade))].filter(Boolean),
     [recruits]
   );
+
   const uniqueStates = useMemo(
     () => [...new Set(recruits.map((r) => r.recruit?.State))].filter(Boolean),
     [recruits]
@@ -173,8 +176,8 @@ export default function UserProfile() {
           : selectedPositions.length === 0
       )
       .filter((row) =>
-        selectedGrades.length > 0 && row.recruit?.['KC Grade'] != null
-          ? selectedGrades.includes(row.recruit['KC Grade'])
+        selectedGrades.length > 0 && row.submission?.grade != null
+          ? selectedGrades.includes(row.submission.grade)
           : selectedGrades.length === 0
       )
       .filter((row) =>
@@ -196,7 +199,7 @@ export default function UserProfile() {
           r.School,
           r.State,
           r.Position,
-          String(r['KC Grade'] ?? ''),
+          String(row.submission?.grade ?? ''),
           r.Class?.toString(),
         ]
           .filter(Boolean)
@@ -205,7 +208,6 @@ export default function UserProfile() {
         return hay.includes(q);
       });
 
-    // sort
     return [...list].sort((a, b) => {
       if (sortBy === 'name') {
         return (a.recruit?.Name || '').localeCompare(b.recruit?.Name || '');
@@ -289,7 +291,7 @@ export default function UserProfile() {
         </div>
         <div className="flex justify-center">
           <DropdownChecklist
-            title="KC Grade"
+            title="Your Grade"
             options={uniqueGrades}
             selected={selectedGrades}
             setSelected={setSelectedGrades}
@@ -303,13 +305,14 @@ export default function UserProfile() {
         </div>
       </div>
 
-      {/* One card per row, bigger interior text & name is clickable */}
+      {/* Cards */}
       <div className="grid grid-cols-1 gap-6">
         {visible.map(({ recruitId, recruit, submission }) => (
           <div
             key={recruitId}
             className="rounded-xl border-4 border-[#f6a21d] bg-white shadow flex flex-col"
           >
+            {/* Name header */}
             <div className="px-5 py-4 bg-[#0055a5] text-white rounded-t-lg font-extrabold uppercase tracking-wide text-3xl">
               <Link to={`/recruit/${recruitId}`} className="hover:underline">
                 {recruit.Name}
@@ -317,15 +320,28 @@ export default function UserProfile() {
             </div>
 
             <div className="p-6 space-y-5 text-gray-800 text-lg">
-              <p className="text-xl text-gray-600">
-                <span className="font-semibold">{recruit.Class}</span> •{' '}
-                <span className="font-semibold">{recruit.Position}</span>
-              </p>
+              {/* School + State */}
               <p className="text-3xl font-bold">
                 {recruit.School}
                 {recruit.State ? `, ${recruit.State}` : ''}
               </p>
 
+              {/* Class + Position */}
+              <p className="text-xl text-gray-600">
+                <span className="font-semibold">{recruit.Class}</span> •{' '}
+                <span className="font-semibold">{recruit.Position}</span>
+              </p>
+
+              {/* Height + Weight */}
+              {(recruit.Height || recruit.Weight) && (
+                <p className="text-lg text-gray-700">
+                  {recruit.Height ? recruit.Height : ''}
+                  {recruit.Height && recruit.Weight ? ' • ' : ''}
+                  {recruit.Weight ? recruit.Weight : ''}
+                </p>
+              )}
+
+              {/* Grade + Predicted School */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 pt-3">
                 <div>
                   <div className="text-sm uppercase text-gray-500">Grade</div>
@@ -337,6 +353,7 @@ export default function UserProfile() {
                 </div>
               </div>
 
+              {/* Strengths */}
               <div>
                 <div className="text-sm uppercase text-gray-500">Strengths</div>
                 <div className="font-semibold text-lg">
@@ -344,6 +361,7 @@ export default function UserProfile() {
                 </div>
               </div>
 
+              {/* Comment */}
               <div>
                 <div className="text-sm uppercase text-gray-500">Comment</div>
                 <div className="font-semibold text-lg">{submission?.comment || 'N/A'}</div>

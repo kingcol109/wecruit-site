@@ -1,8 +1,10 @@
+// src/components/RecruitProfile.js
 import React, { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { doc, getDoc, collection, getDocs } from 'firebase/firestore';
 import { db } from '../firebase';
 import RecruitSubmissionForm from './RecruitSubmissionForm';
+import kcsLogo from '../Assets/kcs-logo.png'; // <-- header logo
 
 function RecruitProfile() {
   const { id } = useParams();
@@ -27,7 +29,7 @@ function RecruitProfile() {
       const strengthCount = {};
       const schoolCount = {};
 
-      submissionsSnap.forEach(d => {
+      submissionsSnap.forEach((d) => {
         const data = d.data();
 
         // Grade (exclude 8 - Watchlist)
@@ -38,7 +40,7 @@ function RecruitProfile() {
         }
 
         // Strengths
-        (data.strengths || []).forEach(s => {
+        (data.strengths || []).forEach((s) => {
           strengthCount[s] = (strengthCount[s] || 0) + 1;
         });
 
@@ -88,6 +90,15 @@ function RecruitProfile() {
 
   return (
     <div className="max-w-6xl mx-auto p-6">
+      {/* Site Header */}
+      <div className="text-center mb-6">
+        <h1 className="text-5xl sm:text-6xl font-black text-[#0055a5]">WeCruit</h1>
+        <div className="mt-2 text-xl font-extrabold text-[#0055a5]">by</div>
+        <div className="mt-2 flex justify-center">
+          <img src={kcsLogo} alt="King Cold Sports" className="h-20 md:h-24 drop-shadow" />
+        </div>
+      </div>
+
       {/* Top bar */}
       <div className="flex items-center justify-between mb-6">
         <button
@@ -108,7 +119,8 @@ function RecruitProfile() {
           {recruit.Class} • {recruit.Position}
         </p>
         <p className="text-2xl font-bold text-gray-700">
-          {recruit.School}{recruit.State ? `, ${recruit.State}` : ''}
+          {recruit.School}
+          {recruit.State ? `, ${recruit.State}` : ''}
         </p>
         {(recruit.Height || recruit.Weight) && (
           <p className="text-2xl font-bold text-gray-800 mt-1">
@@ -171,7 +183,9 @@ function RecruitProfile() {
           <div className="p-5 flex-1">
             {topStrengths.length ? (
               <ol className="list-decimal list-inside text-gray-900 space-y-1">
-                {topStrengths.map((s, i) => <li key={i}>{s}</li>)}
+                {topStrengths.map((s, i) => (
+                  <li key={i}>{s}</li>
+                ))}
               </ol>
             ) : (
               <span className="text-gray-600">No strengths yet.</span>
@@ -187,7 +201,9 @@ function RecruitProfile() {
           <div className="p-5 flex-1">
             {topSchools.length ? (
               <ol className="list-decimal list-inside text-gray-900 space-y-1">
-                {topSchools.map((s, i) => <li key={i}>{s}</li>)}
+                {topSchools.map((s, i) => (
+                  <li key={i}>{s}</li>
+                ))}
               </ol>
             ) : (
               <span className="text-gray-600">No predictions yet.</span>
@@ -202,9 +218,7 @@ function RecruitProfile() {
           <div className="px-5 py-3 bg-[#0055a5] text-white rounded-t-lg font-extrabold uppercase tracking-wide">
             KC's Take
           </div>
-          <div className="p-5 text-gray-900 leading-relaxed">
-            {recruit["KC's Take"]}
-          </div>
+          <div className="p-5 text-gray-900 leading-relaxed">{recruit["KC's Take"]}</div>
         </div>
       )}
 

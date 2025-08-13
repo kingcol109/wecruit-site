@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef } from 'react'; 
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../firebase';
 import { Link } from 'react-router-dom';
@@ -188,6 +188,8 @@ function RecruitList() {
       const haystack = [
         r.Name,
         r.School,
+        r.Height, // include height in search
+        r.Weight, // include weight in search
         r.State,
         r.Position,
         String(r['KC Grade'] ?? ''),
@@ -272,7 +274,7 @@ function RecruitList() {
         <table className="min-w-full border-collapse">
           <thead>
             <tr className="bg-[#0055a5] text-white">
-              {['Name', 'Class', 'Position', 'School', 'State', 'KC Grade'].map((key) => (
+              {['Name', 'Class', 'Position', 'School', 'Height', 'Weight', 'State', 'KC Grade'].map((key) => (
                 <th
                   key={key}
                   onClick={() => handleSort(key)}
@@ -298,6 +300,10 @@ function RecruitList() {
                 <td className="p-3 border-b border-[#f6a21d]">{recruit.Class}</td>
                 <td className="p-3 border-b border-[#f6a21d]">{recruit.Position}</td>
                 <td className="p-3 border-b border-[#f6a21d]">{recruit.School}</td>
+                {/* NEW COLUMNS */}
+                <td className="p-3 border-b border-[#f6a21d]">{recruit.Height || '-'}</td>
+                <td className="p-3 border-b border-[#f6a21d]">{recruit.Weight || '-'}</td>
+                {/* END NEW COLUMNS */}
                 <td className="p-3 border-b border-[#f6a21d]">{recruit.State}</td>
                 <td className="p-3 border-b border-[#f6a21d]">{recruit['KC Grade']}</td>
               </tr>
