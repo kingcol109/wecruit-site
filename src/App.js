@@ -1,24 +1,30 @@
-// src/App.js
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 import RecruitList from './components/RecruitList';
 import RecruitProfile from './components/RecruitProfile';
 import UserProfile from './components/UserProfile';
-import SignIn from './components/SignIn'; // ✅ Import SignIn
+import SignIn from './components/SignIn';
+import Footer from './components/Footer'; // ✅
 
 function App() {
   return (
     <Router>
-      <div className="p-4">
-        <SignIn /> {/* ✅ Always show sign-in / sign-out */}
+      <div className="flex flex-col min-h-screen"> {/* ✅ Flex layout */}
+        <div className="p-4">
+          <SignIn />
+        </div>
+        
+        <div className="flex-grow"> {/* ✅ Makes the content area expand */}
+          <Routes>
+            <Route path="/" element={<RecruitList />} />
+            <Route path="/recruit/:id" element={<RecruitProfile />} />
+            <Route path="/profile" element={<UserProfile />} />
+          </Routes>
+        </div>
+
+        <Footer /> {/* ✅ Footer always at bottom */}
       </div>
-      <Routes>
-        <Route path="/" element={<RecruitList />} />
-        <Route path="/recruit/:id" element={<RecruitProfile />} />
-        <Route path="/profile" element={<UserProfile />} />
-        {/* <Route path="/upload" element={<UploadRecruit />} /> */}
-      </Routes>
     </Router>
   );
 }
