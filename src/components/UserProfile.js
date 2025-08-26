@@ -106,7 +106,7 @@ function SearchBox({ value, onChange, placeholder = 'Search name, school, stateâ
 
 export default function UserProfile() {
   const { user } = useAuth();
-  const [recruits, setRecruits] = useState([]);
+  const [Recruits, setRecruits] = useState([]);
   const [sortBy, setSortBy] = useState('submittedAt');
   const [loading, setLoading] = useState(true);
 
@@ -128,7 +128,7 @@ export default function UserProfile() {
           const recruitId = docSnap.id;
           const recruitDoc = await getDoc(doc(db, 'Recruits', recruitId));
           const submissionDoc = await getDoc(
-            doc(db, `recruits/${recruitId}/userSubmissions/${user.uid}`)
+            doc(db, `Recruits/${recruitId}/userSubmissions/${user.uid}`)
           );
           return {
             recruitId,
@@ -148,28 +148,28 @@ export default function UserProfile() {
 
   // uniques for filters
   const uniquePositions = useMemo(
-    () => [...new Set(recruits.map((r) => r.recruit?.Position))].filter(Boolean),
-    [recruits]
+    () => [...new Set(Recruits.map((r) => r.recruit?.Position))].filter(Boolean),
+    [Recruits]
   );
 
   // use submission.grade instead of KC Grade
   const uniqueGrades = useMemo(
-    () => [...new Set(recruits.map((r) => r.submission?.grade))].filter(Boolean),
-    [recruits]
+    () => [...new Set(Recruits.map((r) => r.submission?.grade))].filter(Boolean),
+    [Recruits]
   );
 
   const uniqueStates = useMemo(
-    () => [...new Set(recruits.map((r) => r.recruit?.State))].filter(Boolean),
-    [recruits]
+    () => [...new Set(Recruits.map((r) => r.recruit?.State))].filter(Boolean),
+    [Recruits]
   );
   const uniqueClasses = useMemo(
-    () => [...new Set(recruits.map((r) => r.recruit?.Class))].filter(Boolean).sort(),
-    [recruits]
+    () => [...new Set(Recruits.map((r) => r.recruit?.Class))].filter(Boolean).sort(),
+    [Recruits]
   );
 
   // filter + search + sort
   const visible = useMemo(() => {
-    const list = recruits
+    const list = Recruits
       .filter((row) =>
         selectedPositions.length > 0 && row.recruit?.Position
           ? selectedPositions.includes(row.recruit.Position)
@@ -220,7 +220,7 @@ export default function UserProfile() {
       }
     });
   }, [
-    recruits,
+    Recruits,
     selectedPositions,
     selectedGrades,
     selectedStates,

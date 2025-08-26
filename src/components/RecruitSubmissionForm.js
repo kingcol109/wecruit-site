@@ -57,7 +57,7 @@ export default function RecruitSubmissionForm({ recruitId }) {
   useEffect(() => {
     if (!user) return;
     const fetch = async () => {
-      const ref = doc(db, `recruits/${recruitId}/userSubmissions/${user.uid}`);
+      const ref = doc(db, `Recruits/${recruitId}/userSubmissions/${user.uid}`);
       const snap = await getDoc(ref);
       if (snap.exists()) {
         setFormData(snap.data());
@@ -89,7 +89,7 @@ export default function RecruitSubmissionForm({ recruitId }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!user) return;
-    const recruitRef = doc(db, `recruits/${recruitId}/userSubmissions/${user.uid}`);
+    const recruitRef = doc(db, `Recruits/${recruitId}/userSubmissions/${user.uid}`);
     const userRef = doc(db, `users/${user.uid}/myRecruits/${recruitId}`);
 
     const now = new Date();
@@ -111,7 +111,7 @@ export default function RecruitSubmissionForm({ recruitId }) {
 
   const handleDelete = async () => {
     if (!user) return;
-    const recruitRef = doc(db, `recruits/${recruitId}/userSubmissions/${user.uid}`);
+    const recruitRef = doc(db, `Recruits/${recruitId}/userSubmissions/${user.uid}`);
     const userRef = doc(db, `users/${user.uid}/myRecruits/${recruitId}`);
 
     await deleteDoc(recruitRef);

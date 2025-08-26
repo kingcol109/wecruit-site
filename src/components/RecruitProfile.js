@@ -22,7 +22,7 @@ function RecruitProfile() {
     };
 
     const fetchAggregateData = async () => {
-      const submissionsRef = collection(db, `recruits/${id}/userSubmissions`);
+      const submissionsRef = collection(db, `Recruits/${id}/userSubmissions`);
       const submissionsSnap = await getDocs(submissionsRef);
 
       const gradeNums = [];

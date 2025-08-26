@@ -108,7 +108,7 @@ function SearchBox({
           focus:outline-none focus:ring-2 focus:ring-[#f6a21d]
           ${inputClassName}
         `}
-        aria-label="Search recruits"
+        aria-label="Search Recruits"
       />
       {value && (
         <button
